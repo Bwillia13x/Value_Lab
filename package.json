@@ -5,11 +5,10 @@
   "scripts": {
     "dev": "echo 'No dev server yet'",
     "lint": "eslint . --ext .ts,.tsx --max-warnings=0",
-    "test": "jest --passWithNoTests",
+    "test": "jest",
     "build": "tsc --noEmit"
   },
   "dependencies": {
-    "node-fetch": "^3.3.2",
     "ioredis": "^5.3.2",
     "@supabase/supabase-js": "^2.39.7"
   },
@@ -23,7 +22,7 @@
     "ts-jest": "^29.0.0",
     "@types/jest": "^29.0.0",
     "typescript": "^5.2.0",
-    "@types/node-fetch": "^3.0.3",
-    "@types/ioredis": "^4.28.4"
+    "@types/ioredis": "^4.28.4",
+    "@types/node": "^18.18.0"
   }
 }

@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import Redis from 'ioredis';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
