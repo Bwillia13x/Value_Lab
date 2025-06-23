@@ -4,9 +4,9 @@ import { getFundReturns } from './services/fundFetcher';
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.get('/health', (_req, res) => res.json({ status: 'ok' }));
+app.get('/health', (_req: any, res: any) => res.json({ status: 'ok' }));
 
-app.get('/fund/:ticker', async (req, res) => {
+app.get('/fund/:ticker', async (req: any, res: any) => {
   try {
     const ticker = req.params.ticker;
     const data = await getFundReturns(ticker);
