@@ -2,11 +2,12 @@
   "name": "value-investor-performance-lab",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "echo 'No dev server yet'",
     "lint": "eslint . --ext .ts,.tsx --max-warnings=0",
-    "test": "jest --passWithNoTests",
-    "build": "tsc --noEmit"
+    "test": "jest",
+    "build": "tsc"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.0.0",
@@ -17,6 +18,16 @@
     "jest": "^29.0.0",
     "ts-jest": "^29.0.0",
     "@types/jest": "^29.0.0",
-    "typescript": "^5.2.0"
+    "typescript": "^5.2.0",
+    "eslint-plugin-jest": "^27.6.0"
+  },
+  "bin": {
+    "value-lab": "dist/cli.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.3",
+    "ioredis": "^5.4.1",
+    "node-fetch": "^3.3.2",
+    "fastify": "^4.24.0"
   }
 }

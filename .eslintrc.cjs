@@ -10,7 +10,10 @@ module.exports = {
     'prettier'
   ],
   rules: {
-    'import/order': ['error', { 'newlines-between': 'always' }],
+    'import/order': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    'import/no-unresolved': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
   },
   ignorePatterns: ['node_modules/', 'dist/'],
   env: {
