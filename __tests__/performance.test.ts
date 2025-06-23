@@ -8,17 +8,15 @@ import {
 } from '../src/utils/performance';
 
 const monthlyPortfolio: number[] = [
-  0.02, -0.01, 0.03, 0.015, 0.0, 0.025, -0.02, 0.01, 0.04, -0.015, 0.005, 0.02,
-  0.01, 0.0, -0.005, 0.03, 0.01, -0.01, 0.025, 0.015, -0.02, 0.005, 0.03, -0.01,
-  0.015, 0.02, -0.02, 0.025, 0.005, 0.015, 0.01, -0.005, 0.03, 0.012, -0.01,
-  0.02,
+  0.02, -0.01, 0.03, 0.015, 0.0, 0.025, -0.02, 0.01, 0.04, -0.015, 0.005, 0.02, 0.01, 0.0, -0.005,
+  0.03, 0.01, -0.01, 0.025, 0.015, -0.02, 0.005, 0.03, -0.01, 0.015, 0.02, -0.02, 0.025, 0.005,
+  0.015, 0.01, -0.005, 0.03, 0.012, -0.01, 0.02,
 ]; // 36 months (3 years)
 
 const monthlyBenchmark: number[] = [
-  0.015, -0.005, 0.025, 0.01, -0.005, 0.02, -0.015, 0.008, 0.03, -0.02, 0.002,
-  0.015, 0.012, -0.002, -0.008, 0.025, 0.012, -0.008, 0.02, 0.01, -0.018,
-  0.004, 0.025, -0.012, 0.012, 0.017, -0.018, 0.02, 0.003, 0.013, 0.008,
-  -0.004, 0.025, 0.01, -0.012, 0.017,
+  0.015, -0.005, 0.025, 0.01, -0.005, 0.02, -0.015, 0.008, 0.03, -0.02, 0.002, 0.015, 0.012, -0.002,
+  -0.008, 0.025, 0.012, -0.008, 0.02, 0.01, -0.018, 0.004, 0.025, -0.012, 0.012, 0.017, -0.018,
+  0.02, 0.003, 0.013, 0.008, -0.004, 0.025, 0.01, -0.012, 0.017,
 ];
 
 const periodsPerYear = 12;
@@ -60,15 +58,24 @@ describe('performance utility', () => {
   });
 
   it('rollingAlpha', () => {
-    const alphas = rollingAlpha(
-      monthlyPortfolio,
-      monthlyBenchmark,
-      3,
-      periodsPerYear,
-    );
+    const alphas = rollingAlpha(monthlyPortfolio, monthlyBenchmark, 3, periodsPerYear);
     // expect length = 36 - 36 +1? Wait window 3 years = 36 months; For length same as window? Actually window size 36, so we should get 1 value aligning to end index 35.
     expect(alphas.length).toBe(1);
     expect(alphas[0]).toBeCloseTo(EXPECTED.rollingAlpha3yLast, 4);
+  });
+
+  it('rollingAlpha multiple windows length', () => {
+    const longPortfolio = [...monthlyPortfolio, ...monthlyPortfolio]; // 72 months
+    const longBenchmark = [...monthlyBenchmark, ...monthlyBenchmark];
+    const alphas = rollingAlpha(longPortfolio, longBenchmark, 3, periodsPerYear);
+    expect(alphas.length).toBe(72 - 36 + 1);
+  });
+
+  it('validation errors', () => {
+    expect(() => rollingAlpha([0.01], [0.02, 0.03], 3, periodsPerYear)).toThrow(
+      /equal length/,
+    );
+    expect(() => cagr([], periodsPerYear)).toThrow(/non-empty/);
   });
 
   // Edge cases

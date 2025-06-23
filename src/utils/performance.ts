@@ -95,11 +95,7 @@ export function hitRatio(returns: number[]): number {
 /**
  * Sortino ratio.
  */
-export function sortinoRatio(
-  returns: number[],
-  riskFree = 0,
-  periodsPerYear: number,
-): number {
+export function sortinoRatio(returns: number[], riskFree = 0, periodsPerYear: number): number {
   validateReturns(returns);
   if (!Number.isFinite(riskFree)) {
     throw new Error('riskFree must be a finite number');
