@@ -1,6 +1,5 @@
 import Redis from 'ioredis';
-import { createClient } from '@supabase/supabase-js';
-import type { SupabaseClient } from '@supabase/supabase-js';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
 export interface MonthlyReturn {
   date: string; // YYYY-MM-DD (month-start)
