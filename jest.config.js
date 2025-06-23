@@ -1,13 +1,20 @@
+import { pathsToModuleNameMapper } from 'ts-jest';
+import tsconfig from './tsconfig.json' assert { type: 'json' };
+
 /** @type {import('ts-jest').JestConfigWithTsJest} */
-module.exports = {
-  preset: 'ts-jest',
+export default {
+  preset: 'ts-jest/presets/default-esm',
   testEnvironment: 'node',
-  roots: ['<rootDir>/src', '<rootDir>/tests'],
-  moduleFileExtensions: ['ts', 'tsx', 'js'],
-  testMatch: ['**/*.test.(ts|tsx|js)'],
+  extensionsToTreatAsEsm: ['.ts'],
   globals: {
     'ts-jest': {
-      tsconfig: 'tsconfig.json',
+      useESM: true,
+      tsconfig: './tsconfig.json',
     },
   },
+  moduleNameMapper: pathsToModuleNameMapper(
+    tsconfig.compilerOptions.paths || {},
+    { prefix: '<rootDir>/' },
+  ),
+  testPathIgnorePatterns: ['/node_modules/', '/dist/'],
 };
