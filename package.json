@@ -5,12 +5,14 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint . --ext .ts",
-    "build": "tsc --noEmit"
+    "build": "tsc --noEmit",
+    "dev": "ts-node src/server.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",
     "ioredis": "^5.3.2",
-    "node-fetch": "^2.6.7"
+    "node-fetch": "^2.6.7",
+    "express": "^4.19.2"
   },
   "devDependencies": {
     "typescript": "^5.4.3",

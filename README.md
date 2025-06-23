@@ -36,9 +36,8 @@ Tests inject dummy values at runtime, so you can run `npm test` without a real S
 | `npm test`        | Run Jest unit + integration tests       |
 | `npm run lint`    | ESLint (currently basic ruleset)        |
 | `npm run build`   | Type-check the codebase (`tsc --noEmit`)|
+| `npm run dev`     | Start local HTTP server on http://localhost:3000 |
 
 ## Roadmap (next)
 
-* GitHub Actions CI (`npm ci → lint → test → build`).
-* Metric helpers (CAGR, drawdown) with unit tests.
-* Simple HTTP endpoint to expose `getFundReturns`. 
+* GitHub Actions CI (`

@@ -9,7 +9,8 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "types": ["node", "jest"],
-    "outDir": "dist"
+    "outDir": "dist",
+    "moduleResolution": "node"
   },
   "include": ["src/**/*.ts", "tests/**/*.ts", "__tests__/**/*.ts"]
 } 
