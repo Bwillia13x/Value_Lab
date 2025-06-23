@@ -1,8 +1,12 @@
 import express from 'express';
 import { getFundReturns } from './services/fundFetcher';
+import path from 'path';
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+// serve static frontend
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
 app.get('/health', (_req: any, res: any) => res.json({ status: 'ok' }));
 
