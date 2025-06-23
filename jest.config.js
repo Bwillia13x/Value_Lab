@@ -5,6 +5,7 @@ module.exports = {
   roots: ['<rootDir>/src', '<rootDir>/__tests__'],
   collectCoverage: true,
   collectCoverageFrom: ['src/utils/performance.ts'],
+  coverageReporters: ['json', 'text', 'lcov', 'clover'],
   coverageThreshold: {
     'src/utils/performance.ts': {
       branches: 90,
