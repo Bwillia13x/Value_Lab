@@ -4,15 +4,6 @@
  * All calculations are deterministic and match Excel within ±1 basis point
  */
 
-import { create, all } from 'mathjs';
-
-// Create a mathjs instance with fixed precision
-const math = create(all);
-math.config({
-  number: 'BigNumber',
-  precision: 64
-});
-
 // Type definitions
 export interface PriceData {
   date: Date;
