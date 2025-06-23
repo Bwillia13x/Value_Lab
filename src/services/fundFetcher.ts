@@ -48,7 +48,7 @@ async function fetchWithRetry(
   // eslint-disable-next-line no-constant-condition
   while (true) {
     try {
-      const res = await fetch(url, options);
+      const res = await fetch(url, options as any);
       if (!res.ok) {
         throw new Error(`HTTP ${res.status} – ${res.statusText}`);
       }
