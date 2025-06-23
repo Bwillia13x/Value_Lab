@@ -57,13 +57,21 @@ export function calculateReturns(prices: PriceData[]): ReturnData[] {
     const prevPrice = sortedPrices[i - 1].value;
     const currPrice = sortedPrices[i].value;
     
-    if (prevPrice !== 0) {
-      const returnValue = (currPrice - prevPrice) / prevPrice;
-      returns.push({
-        date: sortedPrices[i].date,
-        return: returnValue
-      });
+    let returnValue: number;
+    if (prevPrice === 0) {
+      if (currPrice === 0) {
+        // Undefined return (0/0), skip this point
+        continue;
+      }
+      returnValue = currPrice > 0 ? Infinity : -Infinity;
+    } else {
+      returnValue = (currPrice - prevPrice) / prevPrice;
     }
+    
+    returns.push({
+      date: sortedPrices[i].date,
+      return: returnValue
+    });
   }
   
   return returns;
