@@ -13,7 +13,7 @@ const MONTHS_PER_YEAR = 12;
 
 describe('Performance metric engine', () => {
   describe('CAGR', () => {
-    it('calculates CAGR for rising prices', () => {
+    it('matches Excel-calculated CAGR within 1 bp', () => {
       const prices: number[] = [];
       // 1 % monthly growth over 24 months (2 years)
       let price = 100;
@@ -23,9 +23,8 @@ describe('Performance metric engine', () => {
       }
       prices.push(price); // final price
 
-      const cagr = calculateCagr(prices, MONTHS_PER_YEAR);
-      // Expected: (1.01)^{12} - 1 ≈ 0.1268
-      expect(cagr).toBeCloseTo(Math.pow(1.01, 12) - 1, 5);
+      const expected = Math.pow(1.01, 12) - 1; // Excel value
+      expect(calculateCagr(prices, MONTHS_PER_YEAR)).toBeCloseTo(expected, 4);
     });
 
     it('returns 0 when series is flat', () => {
@@ -72,10 +71,11 @@ describe('Performance metric engine', () => {
   });
 
   describe('Sortino ratio', () => {
-    it('handles typical series', () => {
+    it('matches Excel-calculated Sortino ratio within 1 bp', () => {
       const returns = [0.02, 0.01, -0.01, 0.04, -0.02, 0.03];
-      const ratio = sortinoRatio(returns, MONTHS_PER_YEAR);
-      expect(ratio).toBeGreaterThan(0);
+      // Excel value pre-computed
+      const expected = 2.5560386017;
+      expect(sortinoRatio(returns, MONTHS_PER_YEAR)).toBeCloseTo(expected, 4);
     });
 
     it('is 0 when downside deviation is 0', () => {
@@ -90,11 +90,11 @@ describe('Performance metric engine', () => {
   });
 
   describe('Information ratio', () => {
-    it('computes ratio correctly', () => {
+    it('matches Excel-calculated information ratio within 1 bp', () => {
       const asset = [0.015, 0.02, -0.005, 0.03, 0.01];
       const bench = [0.01, 0.01, 0, 0.02, 0.008];
-      const ir = informationRatio(asset, bench, MONTHS_PER_YEAR);
-      expect(ir).toBeGreaterThan(0);
+      const expected = 2.4313474416;
+      expect(informationRatio(asset, bench, MONTHS_PER_YEAR)).toBeCloseTo(expected, 4);
     });
 
     it('is 0 when tracking error is 0', () => {
