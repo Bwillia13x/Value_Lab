@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2020",
-    "module": "Node16",
+    "module": "NodeNext",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -9,7 +9,7 @@
     "outDir": "dist",
     "lib": ["es2020", "dom"],
     "types": ["node", "jest"],
-    "moduleResolution": "Node16"
+    "moduleResolution": "NodeNext"
   },
   "include": ["src/**/*", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules", "dist"]

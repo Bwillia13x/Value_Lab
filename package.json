@@ -24,6 +24,10 @@
     "@types/jest": "^29.0.0",
     "typescript": "^5.2.0",
     "@types/ioredis": "^4.28.4",
-    "@types/node": "^18.18.0"
+    "@types/node": "^18.18.0",
+    "ts-node": "^10.9.1"
+  },
+  "bin": {
+    "value-lab": "./src/cli.ts"
   }
 }
