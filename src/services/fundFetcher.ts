@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import Redis from 'ioredis';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
@@ -19,7 +20,29 @@ if (!REDIS_URL) {
 
 // --- clients -----------------------------------------------------------------
 const supabase: SupabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-const redis = new Redis(REDIS_URL, { maxRetriesPerRequest: null });
+
+// In-memory fallback if Redis not available (REDIS_URL="mock")
+class InMemoryRedis {
+  private store = new Map<string, { v: string; exp?: number }>();
+  async get(k: string): Promise<string | null> {
+    const e = this.store.get(k);
+    if (!e) return null;
+    if (e.exp && e.exp < Date.now()) {
+      this.store.delete(k);
+      return null;
+    }
+    return e.v;
+  }
+  async set(k: string, v: string, mode?: string, ttl?: number): Promise<'OK'> {
+    this.store.set(k, {
+      v,
+      exp: mode === 'EX' && ttl ? Date.now() + ttl * 1000 : undefined,
+    });
+    return 'OK';
+  }
+}
+
+const redis = REDIS_URL === 'mock' ? new InMemoryRedis() : new Redis(REDIS_URL, { maxRetriesPerRequest: null });
 
 // --- helpers -----------------------------------------------------------------
 async function fetchWithRetry(
