@@ -1,7 +1,6 @@
 import Redis from 'ioredis';
-import type IORedis from 'ioredis';
-import { createClient } from '@supabase/supabase-js';
-import type { SupabaseClient } from '@supabase/supabase-js';
+import type { Redis as RedisType } from 'ioredis';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
 export interface MonthlyReturn {
   date: string; // YYYY-MM-DD (month-start)
@@ -21,7 +20,7 @@ if (!REDIS_URL) {
 
 // --- clients -----------------------------------------------------------------
 const supabase: SupabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-const redis: IORedis = new Redis(REDIS_URL, { maxRetriesPerRequest: null });
+const redis: RedisType = new Redis(REDIS_URL, { maxRetriesPerRequest: null });
 
 // --- helpers -----------------------------------------------------------------
 async function fetchWithRetry(
