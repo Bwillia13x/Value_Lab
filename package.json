@@ -1,0 +1,16 @@
+{
+  "name": "performance-metric-engine",
+  "version": "1.0.0",
+  "description": "Utility library for common investment performance metrics.",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.5",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.4.5"
+  }
+}
