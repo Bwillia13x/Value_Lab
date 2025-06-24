@@ -1,4 +1,3 @@
-/* eslint-disable jest/expect-expect */
 import { jest } from '@jest/globals';
 
 // fake env
@@ -45,7 +44,7 @@ jest.mock('ioredis', () =>
         });
         return 'OK';
       },
-    } as any;
+    };
   }),
 );
 

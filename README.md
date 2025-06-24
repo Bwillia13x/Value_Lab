@@ -1,43 +1,95 @@
-# Value Lab – Fund Fetcher MVP
+# Value Lab – Fund Performance Viewer
 
-A minimal backend service that fetches monthly adjusted-close prices for a given ticker from Yahoo Finance, converts them to a rebased total-return series, caches the result in Redis for 24 h and stores the raw JSON in Supabase for auditability.
+A production-ready web application that fetches and visualizes monthly fund performance data. Features interactive charts, performance metrics (CAGR, max drawdown), and a clean TypeScript implementation with caching and error handling.
 
-## Quick start (local)
+## Features
+
+- 📊 Interactive fund performance charts with Chart.js
+- 📈 Key performance metrics calculation (CAGR, Max Drawdown)
+- 🚀 Production-ready TypeScript/Node.js backend
+- ⚡ Redis caching with 24h TTL
+- 🗄️ Supabase data persistence for auditability
+- 🐋 Docker containerization
+- 🔒 Security headers and input validation
+- 🩺 Health check endpoints with monitoring
+- ✅ Comprehensive test coverage
+
+## Quick Start
+
+### Development
 
 ```bash
-# 1. Clone & install deps
+# 1. Install dependencies
 npm ci
 
-# 2. Start Redis (detached)
-docker compose up -d redis   # requires Docker Desktop
+# 2. Start Redis (optional - uses in-memory cache if not available)
+docker compose up -d redis
 
-# 3. Provide environment variables
+# 3. Set up environment
 cp .env.example .env
-# → edit .env with your Supabase project keys (or leave blank for tests)
+# Edit .env with your Supabase credentials (optional for development)
 
 # 4. Run tests
 npm test
+
+# 5. Start development server
+npm run dev
+# Visit http://localhost:3000
 ```
 
-## Required environment variables
+### Production Deployment
 
-| Name                | Example value                     | Notes                           |
-| ------------------- | --------------------------------- | --------------------------------|
-| `SUPABASE_URL`      | `https://xyzcompany.supabase.co`  | Supabase project REST endpoint  |
-| `SUPABASE_ANON_KEY` | `eyJhbGci...`                     | Public anon key                 |
-| `REDIS_URL`         | `redis://localhost:6379`          | Should match docker-compose port|
+```bash
+# Build and start
+npm run build:prod
+npm start
 
-Tests inject dummy values at runtime, so you can run `npm test` without a real Supabase account.
+# Or using Docker
+docker build -t value-lab .
+docker run -p 3000:3000 --env-file .env value-lab
+```
 
-## Project scripts
+## Environment Variables
 
-| Script            | Description                             |
-| ----------------- | --------------------------------------- |
-| `npm test`        | Run Jest unit + integration tests       |
-| `npm run lint`    | ESLint (currently basic ruleset)        |
-| `npm run build`   | Type-check the codebase (`tsc --noEmit`)|
-| `npm run dev`     | Start local HTTP server on http://localhost:3000 |
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `SUPABASE_URL` | No | `https://dummy.supabase.test` | Supabase project URL |
+| `SUPABASE_ANON_KEY` | No | `dummy` | Supabase anonymous key |
+| `REDIS_URL` | No | `mock` | Redis connection URL (use "mock" for in-memory) |
+| `PORT` | No | `3000` | Server port |
+| `NODE_ENV` | No | `development` | Environment mode |
 
-## Roadmap (next)
+## API Endpoints
 
-* GitHub Actions CI (`
+- `GET /health` - Health check with system information
+- `GET /fund/:ticker` - Fetch fund performance data for given ticker
+- `GET /` - Serve the web interface
+
+## Project Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server with hot reload |
+| `npm run build` | Compile TypeScript |
+| `npm run build:prod` | Lint + build for production |
+| `npm start` | Start production server |
+| `npm test` | Run all tests with coverage |
+| `npm run lint` | Run ESLint |
+
+## Architecture
+
+- **Frontend**: Vanilla HTML/JS with Chart.js for visualization
+- **Backend**: Express.js with TypeScript
+- **Cache**: Redis with in-memory fallback
+- **Database**: Supabase for data persistence
+- **External API**: Yahoo Finance for market data
+
+## Production Features
+
+- Type-safe error handling and logging
+- Request validation and sanitization
+- Security headers (X-Frame-Options, X-XSS-Protection, etc.)
+- Comprehensive health checks
+- Docker containerization with non-root user
+- ESLint configuration with strict TypeScript rules
+- Jest test suite with integration tests

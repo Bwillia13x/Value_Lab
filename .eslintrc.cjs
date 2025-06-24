@@ -16,6 +16,12 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
     "prettier",
   ],
+  ignorePatterns: [
+    "futuristic-dash/**/*",
+    "node_modules/**/*",
+    "coverage/**/*",
+    "dist/**/*"
+  ],
   rules: {
     // Place to specify ESLint rules. Can be configured later.
   },

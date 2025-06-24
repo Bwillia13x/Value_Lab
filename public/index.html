@@ -3,16 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <title>Value Lab – Fund Viewer</title>
+  <!-- Tailwind CSS CDN for quick styling -->
+  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
   <style>
-    body { font-family: Arial, sans-serif; max-width: 720px; margin: 2rem auto; }
-    #chart { width: 100%; height: 400px; }
+    #chart {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      height: 420px !important;
+    }
   </style>
 </head>
 <body>
-  <h1>Fund Return Viewer</h1>
-  <label>Ticker: <input id="ticker" value="SPY" /></label>
-  <button id="load">Load</button>
-  <canvas id="chart"></canvas>
+  <div class="prose mx-auto text-center">
+    <h1 class="text-3xl font-bold mb-3">Fund Return Viewer</h1>
+    <div class="flex justify-center gap-2 mb-6">
+      <input id="ticker" value="SPY" class="border rounded px-2 py-1 w-28 text-center" />
+      <button id="load" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-1 rounded">Load</button>
+    </div>
+  </div>
+
+  <div class="max-w-3xl mx-auto">
+    <canvas id="chart"></canvas>
+
+    <!-- metrics -->
+    <div id="metrics" class="grid grid-cols-2 gap-4 mt-6 text-center"></div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
@@ -23,6 +39,33 @@
       if (!res.ok) throw new Error('API error');
       return res.json();
     }
+    function computeMetrics(series) {
+      const first = series[0].price;
+      const last = series[series.length - 1].price;
+      const years = (series.length - 1) / 12;
+      const cagr = Math.pow(last / first, 1 / years) - 1;
+      // max drawdown
+      let peak = series[0].index, maxDD = 0;
+      series.forEach(d => {
+        if (d.index > peak) peak = d.index;
+        const dd = (peak - d.index) / peak;
+        if (dd > maxDD) maxDD = dd;
+      });
+      return { cagr, maxDD };
+    }
+
+    function renderMetrics({ cagr, maxDD }) {
+      document.getElementById('metrics').innerHTML = `
+        <div class="rounded-lg bg-gray-100 p-4">
+          <p class="text-sm text-gray-500">CAGR</p>
+          <p class="text-xl font-semibold">${(cagr * 100).toFixed(2)} %</p>
+        </div>
+        <div class="rounded-lg bg-gray-100 p-4">
+          <p class="text-sm text-gray-500">Max Drawdown</p>
+          <p class="text-xl font-semibold">${(maxDD * 100).toFixed(2)} %</p>
+        </div>`;
+    }
+
     function draw(series) {
       const labels = series.map(d => d.date);
       const data = series.map(d => d.index);
@@ -35,10 +78,13 @@
         },
         options: {
           responsive: true,
-          maintainAspectRatio: false,
+          maintainAspectRatio: true,
           scales: { x: { ticks: { maxTicksLimit: 12 } } }
         }
       });
+
+      // show metrics
+      renderMetrics(computeMetrics(series));
     }
     document.getElementById('load').addEventListener('click', async () => {
       const t = document.getElementById('ticker').value.trim();

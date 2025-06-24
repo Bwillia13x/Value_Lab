@@ -46,10 +46,10 @@ async function fetchWithRetry(
   options: RequestInit = {},
   retries = 3,
   backoff = 500,
-): Promise<any> {
+): Promise<unknown> {
   for (let i = 0; ; i++) {
     try {
-      const res = await fetch(url, options as any);
+      const res = await fetch(url, options);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       return res.json();
     } catch (e) {
@@ -68,8 +68,16 @@ async function yahooChart(ticker: string) {
   return fetchWithRetry(url);
 }
 
-function toMonthly(raw: any): MonthlyReturn[] {
-  const result = raw?.chart?.result?.[0];
+function toMonthly(raw: unknown): MonthlyReturn[] {
+  const typedRaw = raw as { chart?: { result?: Array<unknown> } };
+  const result = typedRaw?.chart?.result?.[0] as {
+    timestamp?: number[];
+    indicators?: {
+      adjclose?: Array<{
+        adjclose?: (number | null)[];
+      }>;
+    };
+  };
   const ts: number[] = result?.timestamp ?? [];
   const prices: (number | null)[] =
     result?.indicators?.adjclose?.[0]?.adjclose ?? [];
@@ -97,7 +105,7 @@ function toMonthly(raw: any): MonthlyReturn[] {
   });
 }
 
-async function persistRaw(ticker: string, raw: any, fetchedAt: string) {
+async function persistRaw(ticker: string, raw: unknown, fetchedAt: string) {
   await supabase
     .from('fund_prices')
     .insert([{ ticker, raw_json: raw, fetched_at: fetchedAt }]);

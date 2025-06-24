@@ -1,0 +1,35 @@
+export const meta = {
+  title: 'Hands-on with the Value-Investor Performance Lab',
+  date: '2024-06-21',
+  description:
+    'Walk through the new Value Lab tool and see how it crunches historical returns in real-time.'
+};
+
+# Value-Investor Performance Lab – Interactive Demo
+
+> Kick the tyres, run a Monte-Carlo, and explore Berkshire's drawdowns – right here in the post.
+
+<iframe
+  src="https://VALUE_LAB_DEMO_URL"  /* ← replace with your Vercel deploy e.g. https://value-lab.vercel.app */
+  width="100%"
+  height="680"
+  style={{ border: 'none', borderRadius: '8px' }}
+  loading="lazy"
+  title="Value-Investor Performance Lab Demo"
+/>
+
+---
+
+## What you're looking at
+
+1. **Live data** from Yahoo Finance (cached via Redis for 24 h).  
+2. **On-the-fly metrics**: CAGR, Sharpe, Sortino, max drawdown.  
+3. **In-browser Monte-Carlo** with regime switching.
+
+Need the CLI version instead? Run:
+
+```bash
+npx value-lab BRK-A
+```
+
+Happy exploring! 
