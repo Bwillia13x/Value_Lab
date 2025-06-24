@@ -18,4 +18,4 @@ yarn-error.log*
 .env.*
 
 # Cursor and code coverage HTML
-coverage/** 
+coverage/** futuristic-dash/
